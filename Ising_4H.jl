@@ -182,7 +182,7 @@ begin
 	hfitii = curve_fit(LinearFit, tii, cii)
 	tvals = range(0,6, length = 100) #temperature values for showing fit
 	plot(tvals,hfitii.(tvals),label="fit ||", lw = 2, xlabel = L"T [K]",
-    ylabel = L"\mu_0H_{c2}~[T]", xlims = (0, :auto))
+    ylabel = L"B_{c2}~[T]", xlims = (0, :auto))
 	hfitt = curve_fit(LinearFit, tt, ct)
 	plot!(tvals,hfitt.(tvals),label="fit ⊥", lw = 2)
 	plot!(tii,cii,seriestype=:scatter, label="experiment ||",
