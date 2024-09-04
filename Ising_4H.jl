@@ -163,7 +163,7 @@ begin
 	critemp = @bind critemp NumberField(0.00:0.01:100.00, default = 6.0)
 	coupling = @bind coupling NumberField(3.00:0.01:5.00, default = 3.53)
 md"### ``T_c=`` $(critemp) K
-### coupling: $(coupling)"
+### ``\frac{2\Delta}{k_BT_c} =`` $(coupling)"
 end
 
 # ╔═╡ da3f42ae-c1f9-49ec-b20c-be8fb86c7cab
@@ -234,7 +234,7 @@ end
 # ╔═╡ 1398998a-6c9b-4be8-816c-c6fc375c02dd
 begin
 	zeta = @bind zeta NumberField(0.00:100.00, default = 75.00)
-	hop = @bind hop NumberField(0.00:0.05:100.00, default = 4.25)
+	hop = @bind hop NumberField(0.00:0.05:100.00, default = 10)
 	md"``\zeta=`` $(zeta) meV; ``t=`` $(hop) meV"
 end
 
