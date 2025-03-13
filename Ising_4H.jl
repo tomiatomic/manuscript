@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.3
+# v0.20.4
 
 using Markdown
 using InteractiveUtils
@@ -141,7 +141,7 @@ We used X-ray photoemission spectroscopy (XPS) to compare the investigated ``4H-
 """
 
 # ╔═╡ e795e1d9-d8f8-4fed-8d79-497e501ec2d3
-load("XPS//XPS.png")
+load("XPS//zoom//XPS.png")
 
 # ╔═╡ 37ac5b20-cb17-4b01-a648-f2ebe1921fe4
 md"""
@@ -165,9 +165,9 @@ imresize(load("lattice//4H_lattice.png"), ratio = 1/4)
 # ╔═╡ 691e5f7d-bd7c-4192-9182-df96f3b6e72d
 begin
 	gr()
-	scatter(xrd_ang, xrd, xlabel = L"2\Theta", ylabel = "Intensity", label = "XRD", marker=:circle, ms=2, mc=RGBA(1, 1, 1, 0), grid = false, size = (600, 400), dpi = 300, fmt = :png, margin = 0pt)
+	scatter(xrd_ang, xrd, xlabel = L"2\Theta", ylabel = L"Intensity", label = L"XRD", marker=:circle, ms=2, mc=RGBA(1, 1, 1, 0), grid = false, size = (600, 400), dpi = 300, fmt = :svg, margin = 0pt)
 	plot!(xrd_ang, xrd_calc, lc = :red, lw = 2, label = L"4H-NbSe_2~ fit")
-	plot!(xrd_ang, xrd_bg, lw = 2, lc = :green1, label = "background")
+	plot!(xrd_ang, xrd_bg, lw = 2, lc = :green1, label = L"background")
 end
 
 # ╔═╡ cab54902-545d-4b82-827c-8832f98c852a
@@ -271,7 +271,7 @@ begin
 	color_palette = palette([:black, :red], length(perpdata[1,collect(1:3:end)])+1),
 	lw = 2, 
 	xlims = (1.6, 8), ylims = (4, 13),
-	legend=:bottomright, fmt = :svg)
+	legend=:bottomright, fmt = :svg,)
 	plot!(perp_ep[:,1],perp_ep[:,2], lw = 2, label = "C/T 5T")
 end
 
@@ -341,36 +341,36 @@ begin
 	gr()
 	tvals = range(0,critemp, length = 100) #temperature values for showing fit
 
-	#B perpendicular
-	scatter(tt, ht, marker=:star, ms=6, mc=:black,label="experiment ⊥", ylimits=(0, :auto))
-	
 	#B parallel
-	scatter!(tii, hii, marker=:circle, ms=5, mc=:black, 
-		label="experiment ||", ylimits=(0, :auto))
+	scatter(tii, hii, marker=:circle, ms=5, mc=:black, 
+		label="B || ab (a)", ylimits=(0, :auto))
 
 	#B parallel from Grenoble
 	scatter!(tii_hiB, hii_hiB, xerr = erii_hiB, ms = 1, ec=:black, label = "")
-	scatter!(tii_hiB, hii_hiB, marker=:diamond, ms=6, mc=:black, label="experiment ||", ylimits=(0, :auto)) #yerror = erii_hiB
+	scatter!(tii_hiB, hii_hiB, marker=:diamond, ms=6, mc=:black, label="B || ab (b)", ylimits=(0, :auto)) #yerror = erii_hiB
 
 	#B parallel field sweeps mid point
 	scatter!(t_sweep, h_mid, err = er_mid, ms = 1, ec=:black, label = "")
-	scatter!(t_sweep, h_mid, marker=:utriangle, ms=6, mc=:black, label="B-sweep mid ||", ylimits=(0, :auto))
+	scatter!(t_sweep, h_mid, marker=:utriangle, ms=6, mc=:black, label="B || ab (c)", ylimits=(0, :auto))
 
 	#B parallel field sweeps max point
 	scatter!(t_sweep, h_max, err = er_max, ms = 1, ec=:black, label="")
-	scatter!(t_sweep, h_max, marker=:square, ms = 4, mc = RGBA(1, 1, 1, 0), label="B-sweep max ||", ylimits=(0, :auto))
+	scatter!(t_sweep, h_max, marker=:square, ms = 4, mc = RGBA(1, 1, 1, 0), label="B || ab (c) max", ylimits=(0, :auto))
+	
+	#B perpendicular
+	scatter!(tt, ht, marker=:star, ms=6, mc=:black,label="B ⊥ ab (d)", ylimits=(0, :auto))
 	
 	#perpendicular linear fit
 	hfitt = curve_fit(LinearFit, tt, ht)
-	plot!(tvals,hfitt.(tvals),label="⊥ linear fit", lw = 2, lc = :black)
+	plot!(tvals,hfitt.(tvals),label="B ⊥ ab linear fit", lw = 2, lc = :black)
 	
 	#parallel linear fit of all mid points
 	hfitii = curve_fit(LinearFit, sorted_t, sorted_h)
-	plot!(tvals,hfitii.(tvals),label="|| linear fit", lw = 2, lc = :red,
+	plot!(tvals,hfitii.(tvals),label="B || ab linear fit", lw = 2, lc = :red,
 		xlabel = L"T [K]", ylabel = L"B_{c2}~[T]", xlims = (0, :auto))
 		
 	#parallel WHH fit
-	plot!(float.(genwhh[:,1]),float.(genwhh[:,2]), ls = :dash, lw = 2, lc = :red,  label = "|| WHH fit")
+	plot!(float.(genwhh[:,1]),float.(genwhh[:,2]), ls = :dash, lw = 2, lc = :red,  label = "B || WHH fit")
 	
 	#Pauli limit
 	#plot!([0; 7], [paulim; paulim], ls = :dash, lw = 2, label = "Pauli limit")
@@ -394,7 +394,7 @@ md"## Density Functional Theory calculations
 provide the information about ``k_z`` dispersion, spin-orbit coupling and potential shift between layers."
 
 # ╔═╡ 73d8694a-ece4-498f-9b54-6133dd08ed8e
-load("DFT//Nb_orbitals.png")
+load("DFT//old//Nb_orbitals.png")
 
 # ╔═╡ 183f26dc-803f-4d6a-8097-b2470b8e168f
 md"""
@@ -498,7 +498,7 @@ PlutoUI = "~0.7.55"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.2"
+julia_version = "1.11.3"
 manifest_format = "2.0"
 project_hash = "d4c52bcd1b28181ac2dd1ce9b53d5a5cc251893e"
 
@@ -2421,66 +2421,66 @@ version = "1.4.1+1"
 """
 
 # ╔═╡ Cell order:
-# ╟─92baa33e-be0e-4cc0-bfe6-888c4d96a78d
-# ╟─edba3c6f-ff6d-4b39-8859-a1c0823665cd
-# ╟─723dedb4-ce4d-45d8-8d3d-ea028c2e036e
-# ╟─984e617a-03bb-4726-bdba-39f00423516a
-# ╟─115f862e-7aab-43d5-b57f-0b7b8f5956bc
-# ╟─22ed2ad9-f7c5-4a95-aae7-0da9c8b83a99
-# ╟─78df4090-6316-482e-9c59-307572f37f99
-# ╟─1cd76d19-fc30-4386-9ddf-f905783513dd
-# ╟─d03596c2-0f71-4c68-8330-0ccc366b3ce5
-# ╟─12d13204-8219-4065-98ed-cf4b7d9579d7
-# ╟─5b4fe364-7afd-4097-8279-8acb7c40cbe9
-# ╟─2dbc4b0a-1812-465d-b765-f09546bfb7ee
-# ╟─a1512d02-3099-49c4-9a75-cb29ca5e0b98
-# ╟─e795e1d9-d8f8-4fed-8d79-497e501ec2d3
-# ╟─37ac5b20-cb17-4b01-a648-f2ebe1921fe4
-# ╟─eb94449c-8fcb-4555-9c98-8e6fd4337126
-# ╟─5651bb11-3ea7-4458-91be-ecb1f81b9bc8
-# ╟─da7279fe-bb19-4007-ba40-822a63374f40
-# ╟─691e5f7d-bd7c-4192-9182-df96f3b6e72d
-# ╟─cab54902-545d-4b82-827c-8832f98c852a
-# ╟─019f4315-37c5-4632-9e33-42d0849b935f
-# ╟─d37e7fc9-ea4f-4559-b7be-fe57135fd848
-# ╟─a5c0d1a9-4d83-47f1-83d0-1a26751c9c50
-# ╟─a75697eb-7cf5-4b11-b1f1-f23fc43d1ada
-# ╟─44df2447-9fa3-4891-a9fc-411050ab96ad
-# ╟─b5ae0242-0645-4908-8f50-999e7e93f622
-# ╟─6fda2a9e-12e7-43e1-a6ba-681514bf3ca5
-# ╟─9c8d50f7-5dd0-4063-a0b5-4ae98cdc14bb
-# ╟─672aee93-9c41-40e9-8f71-babeb7d2944b
-# ╟─b4ac332c-93ab-41d1-bad3-23887e896a9d
-# ╟─4df3b495-8e40-4214-a052-52f0dc74a238
-# ╟─8ea2cba4-b9c3-41aa-8f2f-534691457733
-# ╟─7bcf1f0a-32fd-4754-aae8-7af85b464993
-# ╟─d608bf1f-3005-47ac-9f54-58c4ad2f6b3a
-# ╟─bbc5ec2c-8181-4f15-a782-0383bfc91a80
-# ╟─6fd0816d-9b22-4c03-8f8c-9a1c885549be
-# ╟─b8f35797-ae92-48db-9d33-92ce6169096b
-# ╟─6c58d21f-c555-4e95-9928-d488c5f3e67c
-# ╟─ae777ed8-3a58-4387-bf90-40bc774e92ee
-# ╟─db482647-c87c-4fff-865f-a9d8d1f197c3
-# ╟─5590150a-528a-4e6d-b2b1-3f4a1d4b3835
-# ╟─da3f42ae-c1f9-49ec-b20c-be8fb86c7cab
-# ╟─a6206b0a-6535-45a6-85b1-8be511356935
-# ╟─f2f29b06-9732-4f15-ab50-f22cb036ec3e
-# ╟─518d7b70-39be-4fd2-9599-fdf6add34df7
-# ╟─5d95933a-380a-406b-aba8-5b4fe9863ffc
-# ╟─cf23e217-5fa6-4247-a2ff-90d61e83e10f
-# ╟─73d8694a-ece4-498f-9b54-6133dd08ed8e
-# ╟─183f26dc-803f-4d6a-8097-b2470b8e168f
-# ╟─cd00ff2c-ca07-4a9b-8bb9-225d36e062d3
-# ╟─45703adf-0409-4007-9ee7-55ad2f4edeee
-# ╟─c059fe41-3afc-4378-ab29-a58ad582ecb4
-# ╟─20b43065-7091-4cec-aa48-940f746ed4e9
-# ╟─cc502f7f-e718-4725-955e-5b1f8e76d648
-# ╟─1398998a-6c9b-4be8-816c-c6fc375c02dd
-# ╟─39b94ca7-0a7f-4fd9-a7d2-7cc5b29361ef
-# ╟─c4b4cac7-47a4-4a75-8d85-4ff1dd2c1f65
-# ╟─50c8732c-687d-49c9-8c73-3d464756cb17
-# ╟─116be57b-42f2-42be-b462-00ab3445f4a3
-# ╟─1b4c116e-9dff-444d-a074-5a2ee1773d06
-# ╟─09191266-178e-4781-bd45-e52e32b0c846
+# ╠═92baa33e-be0e-4cc0-bfe6-888c4d96a78d
+# ╠═edba3c6f-ff6d-4b39-8859-a1c0823665cd
+# ╠═723dedb4-ce4d-45d8-8d3d-ea028c2e036e
+# ╠═984e617a-03bb-4726-bdba-39f00423516a
+# ╠═115f862e-7aab-43d5-b57f-0b7b8f5956bc
+# ╠═22ed2ad9-f7c5-4a95-aae7-0da9c8b83a99
+# ╠═78df4090-6316-482e-9c59-307572f37f99
+# ╠═1cd76d19-fc30-4386-9ddf-f905783513dd
+# ╠═d03596c2-0f71-4c68-8330-0ccc366b3ce5
+# ╠═12d13204-8219-4065-98ed-cf4b7d9579d7
+# ╠═5b4fe364-7afd-4097-8279-8acb7c40cbe9
+# ╠═2dbc4b0a-1812-465d-b765-f09546bfb7ee
+# ╠═a1512d02-3099-49c4-9a75-cb29ca5e0b98
+# ╠═e795e1d9-d8f8-4fed-8d79-497e501ec2d3
+# ╠═37ac5b20-cb17-4b01-a648-f2ebe1921fe4
+# ╠═eb94449c-8fcb-4555-9c98-8e6fd4337126
+# ╠═5651bb11-3ea7-4458-91be-ecb1f81b9bc8
+# ╠═da7279fe-bb19-4007-ba40-822a63374f40
+# ╠═691e5f7d-bd7c-4192-9182-df96f3b6e72d
+# ╠═cab54902-545d-4b82-827c-8832f98c852a
+# ╠═019f4315-37c5-4632-9e33-42d0849b935f
+# ╠═d37e7fc9-ea4f-4559-b7be-fe57135fd848
+# ╠═a5c0d1a9-4d83-47f1-83d0-1a26751c9c50
+# ╠═a75697eb-7cf5-4b11-b1f1-f23fc43d1ada
+# ╠═44df2447-9fa3-4891-a9fc-411050ab96ad
+# ╠═b5ae0242-0645-4908-8f50-999e7e93f622
+# ╠═6fda2a9e-12e7-43e1-a6ba-681514bf3ca5
+# ╠═9c8d50f7-5dd0-4063-a0b5-4ae98cdc14bb
+# ╠═672aee93-9c41-40e9-8f71-babeb7d2944b
+# ╠═b4ac332c-93ab-41d1-bad3-23887e896a9d
+# ╠═4df3b495-8e40-4214-a052-52f0dc74a238
+# ╠═8ea2cba4-b9c3-41aa-8f2f-534691457733
+# ╠═7bcf1f0a-32fd-4754-aae8-7af85b464993
+# ╠═d608bf1f-3005-47ac-9f54-58c4ad2f6b3a
+# ╠═bbc5ec2c-8181-4f15-a782-0383bfc91a80
+# ╠═6fd0816d-9b22-4c03-8f8c-9a1c885549be
+# ╠═b8f35797-ae92-48db-9d33-92ce6169096b
+# ╠═6c58d21f-c555-4e95-9928-d488c5f3e67c
+# ╠═ae777ed8-3a58-4387-bf90-40bc774e92ee
+# ╠═db482647-c87c-4fff-865f-a9d8d1f197c3
+# ╠═5590150a-528a-4e6d-b2b1-3f4a1d4b3835
+# ╠═da3f42ae-c1f9-49ec-b20c-be8fb86c7cab
+# ╠═a6206b0a-6535-45a6-85b1-8be511356935
+# ╠═f2f29b06-9732-4f15-ab50-f22cb036ec3e
+# ╠═518d7b70-39be-4fd2-9599-fdf6add34df7
+# ╠═5d95933a-380a-406b-aba8-5b4fe9863ffc
+# ╠═cf23e217-5fa6-4247-a2ff-90d61e83e10f
+# ╠═73d8694a-ece4-498f-9b54-6133dd08ed8e
+# ╠═183f26dc-803f-4d6a-8097-b2470b8e168f
+# ╠═cd00ff2c-ca07-4a9b-8bb9-225d36e062d3
+# ╠═45703adf-0409-4007-9ee7-55ad2f4edeee
+# ╠═c059fe41-3afc-4378-ab29-a58ad582ecb4
+# ╠═20b43065-7091-4cec-aa48-940f746ed4e9
+# ╠═cc502f7f-e718-4725-955e-5b1f8e76d648
+# ╠═1398998a-6c9b-4be8-816c-c6fc375c02dd
+# ╠═39b94ca7-0a7f-4fd9-a7d2-7cc5b29361ef
+# ╠═c4b4cac7-47a4-4a75-8d85-4ff1dd2c1f65
+# ╠═50c8732c-687d-49c9-8c73-3d464756cb17
+# ╠═116be57b-42f2-42be-b462-00ab3445f4a3
+# ╠═1b4c116e-9dff-444d-a074-5a2ee1773d06
+# ╠═09191266-178e-4781-bd45-e52e32b0c846
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
